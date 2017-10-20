@@ -1,0 +1,38 @@
+<h1>Hi, <%= @user.first_name %> <%= @user.last_name %></h1>
+
+<h3>Create a new group</h3>
+<form action="/groups" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  Name: <input type="text" name=group[name]><br>
+  Description: <input type="text" name=group[description]><br>
+  <input type="submit" value="Create">
+</form>
+
+<h3>Here are the groups you may join: </h3>
+<% if @groups %> 
+  <% @groups.each do |g| %>
+    <strong><a href="/groups/<%= g.id %>"><%= g.name %></a></strong>
+    <% if g.user == current_user %>
+      <form action="/groups/<%= g.id %>" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Delete">
+      </form>
+    <%end%>
+    <br>
+    Members joined: <%= g.users.count %><br>
+    Description: <%= g.description %>
+    <br>
+    <br>
+<%end%>
+<%end%>
+
+
+
+
+
+
+
+
+
+

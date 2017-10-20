@@ -1,0 +1,34 @@
+<a href="/groups/new">Dashboard</a>
+<h1><%= @group.name %></h1>
+<%= @group.description %><br>
+<% if not @group.users.include?(current_user) %>
+  <form action="/joins" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="hidden" name="join[group_id]" value="<%= @group.id %>">
+    <input type="submit" value="Join">
+  </form>
+<%else%>
+  <form action="/joins/<%=Join.where(user:current_user, group: @group).first.id%>" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" value="Leave">
+  </form>
+<%end%>
+
+<h3>Created by: <%= @group.user.first_name %> <%= @group.user.last_name %></h3>
+<h3>Members:</h3>
+<% if @group.users %>
+  <% @group.users.each do |name| %>
+    <%= name.first_name %> <%= name.last_name %><br>
+  <%end%>
+<%end%>
+
+
+
+
+
+
+
+
+
+
